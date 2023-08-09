@@ -22,6 +22,7 @@ const initialNewUserData = {
 export const UserCreate: React.FC = () => {
   const navigate = useNavigate();
   const [newUserData, setnewUserData] = React.useState(initialNewUserData);
+  const [userImg,setUserImg] = React.useState<File>();
   const { refetchGetAllUsers } = useUser();
   const { userService } = useService();
   const MySwal = withReactContent(Swal);
@@ -30,6 +31,10 @@ export const UserCreate: React.FC = () => {
     (requestBody: INewUser) => userService.createNewUser(requestBody)
   );
 
+  // const { mutateAsync: mutateCreateUserImgApplication } = useMutation(
+  //   (id:number|string,file: File) => userService.createNewUserImg(id,file)
+  // );
+
   const handleNewUserInputChanges =  React.useCallback(
     ({ target: { name, value } }: React.ChangeEvent<HTMLInputElement>) => {
       setnewUserData((previus) => ({ ...previus, [name]: value }));
@@ -37,8 +42,22 @@ export const UserCreate: React.FC = () => {
     []
   );
 
+  const handleUserImgInputValueChange  = ({target:{files}}:React.ChangeEvent<HTMLInputElement>)=>{
+   if(files)
+   {
+    if(files[0].type==="image/jpeg")
+       setUserImg(files[0])
+   }
+  }
+
   const handleSumbitEditDatas = () => {
-    mutateCreateUserApplication(newUserData).then(() => {refetchGetAllUsers()
+    mutateCreateUserApplication(newUserData)
+    .then(({data:{id}}) => {
+      if(userImg)
+      userService.createNewUserImg(id,userImg)
+      
+      
+      refetchGetAllUsers()
       MySwal.fire({
         position: "top-end",
         icon: "success",
@@ -93,6 +112,12 @@ export const UserCreate: React.FC = () => {
         type="password"
         className="userCreateInput"
         placeholder="Please Write password"
+      />
+      <Input
+        onChange={handleUserImgInputValueChange}
+        name="img"
+        type="file"
+        className="userCreateInput"
       />
       <Button
         onClick={handleSumbitEditDatas}

@@ -57,7 +57,8 @@ export const BasicTable: React.FC<IProps> = ({ users }) => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
+            <TableCell>Image</TableCell>
+            <TableCell align="right">Name</TableCell>
             <TableCell align="right">SurName</TableCell>
             <TableCell align="right">Age</TableCell>
             <TableCell align="right">Email</TableCell>
@@ -72,8 +73,12 @@ export const BasicTable: React.FC<IProps> = ({ users }) => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {user.firstName}
+                {
+                  //img area
+                  <img className="userImage" src="https://cdn-icons-png.flaticon.com/512/21/21104.png" alt="" />
+                }
               </TableCell>
+              <TableCell align="right">{user.firstName}</TableCell>
               <TableCell align="right">{user.lastName}</TableCell>
               <TableCell align="right">{user.age}</TableCell>
               <TableCell align="right">{user.email}</TableCell>

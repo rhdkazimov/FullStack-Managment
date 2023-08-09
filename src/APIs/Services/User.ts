@@ -25,6 +25,12 @@ export class UserService extends HttpClient{
         return await this.put(`edit/${id}`,body)
     }
 
+    async createNewUserImg(id:string|number,file:File){
+        const imgFile = new FormData();
+        imgFile.append("img",file);
+        return await this.post(`user/create/img/${id}`,imgFile)
+    }
+
     async createNewUser(body:INewUser){
         return await this.post('user/create',body)
     }
